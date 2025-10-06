@@ -2,34 +2,175 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bizzone MVP</title>
-  <link rel="icon" href="logo.png" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Универсалды Бизнес Ассистент (MVP)</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">
-      <img src="logo.png" class="logo" alt="Bizzone logo" />
-      <div class="brand-text"><b>Bizzone</b><br><small>Smart zone for business</small></div>
-    </div>
-    <nav>
-      <a href="#" class="active" data-route="home">Home</a>
+    <div class="brand">BizAssist MVP</div>
+    <nav class="nav">
+      <a href="#" data-route="home" class="active">Home</a>
       <a href="#" data-route="dashboard">Dashboard</a>
+      <a href="#" data-route="clients">Clients</a>
+      <a href="#" data-route="sales">Sales</a>
+      <a href="#" data-route="analytics">Analytics</a>
+      <a href="#" data-route="chat">Chat</a>
+      <a href="#" data-route="settings">Settings</a>
     </nav>
   </header>
-  <main>
-    <section class="page visible" data-page="home">
+
+  <main id="app">
+    <section data-page="home" class="page visible">
       <h1>Универсалды бизнес ассистент</h1>
-      <p>AI бухгалтер, заңгер және төлем жүйесі бар тегін MVP</p>
-      <button data-route="dashboard">Кіру → Dashboard</button>
+      <p>Уақыт үнемде, қателікті азайт, клиентпен жылдам жұмыс істе.
+        Қажет емес модульдер интерфейсте көрінбейді.</p>
+      <div class="cards">
+        <div class="card">
+          <h3>Жылдам бастау</h3>
+          <p>Бәрі жергілікті түрде сақталады — сервер қажет емес.</p>
+        </div>
+        <div class="card">
+          <h3>Модульдік</h3>
+          <p>Sales, Clients, Analytics, Chat — керегін ғана қос.</p>
+        </div>
+        <div class="card">
+          <h3>Арзан</h3>
+          <p>Тегін хостингті GitHub Pages/Netlify арқылы қоса аласың.</p>
+        </div>
+      </div>
+      <button class="primary" data-route="dashboard">Кіру → Dashboard</button>
     </section>
-    <section class="page" data-page="dashboard">
+
+    <section data-page="dashboard" class="page">
       <h2>Dashboard</h2>
-      <p>Мұнда бухгалтерия, төлем, HR және AI кеңесші модульдері болады.</p>
+      <div id="dashboard-modules" class="cards grid-4">
+        <div class="card module" data-module="clients">
+          <h3>Clients</h3>
+          <p>Клиенттер базасын жүргізу.</p>
+          <button data-route="clients">Ашу</button>
+        </div>
+        <div class="card module" data-module="sales">
+          <h3>Sales</h3>
+          <p>Тапсырыстар мен сатылым есебі.</p>
+          <button data-route="sales">Ашу</button>
+        </div>
+        <div class="card module" data-module="analytics">
+          <h3>Analytics</h3>
+          <p>Негізгі көрсеткіштер мен график.</p>
+          <button data-route="analytics">Ашу</button>
+        </div>
+        <div class="card module" data-module="chat">
+          <h3>Chat</h3>
+          <p>Клиентпен жылдам байланыс (ішкі чат).</p>
+          <button data-route="chat">Ашу</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat"><span id="statClients">0</span><label>Clients</label></div>
+        <div class="stat"><span id="statOrders">0</span><label>Orders (7d)</label></div>
+        <div class="stat"><span id="statRevenue">0</span><label>Total ₸</label></div>
+      </div>
+    </section>
+
+    <section data-page="clients" class="page">
+      <h2>Clients</h2>
+      <form id="clientForm" class="form">
+        <input required name="name" placeholder="Аты-жөні" />
+        <input name="phone" placeholder="Телефон" />
+        <input name="channel" placeholder="Канал (Telegram/Instagram/т.б.)" />
+        <input name="notes" placeholder="Ескертпе" />
+        <button class="primary" type="submit">Қосу</button>
+      </form>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Аты</th><th>Телефон</th><th>Канал</th><th>Ескертпе</th><th>Құрал</th>
+            </tr>
+          </thead>
+          <tbody id="clientsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section data-page="sales" class="page">
+      <h2>Sales</h2>
+      <form id="orderForm" class="form">
+        <select required name="client_id" id="orderClientSelect">
+          <option value="">Клиентті таңда…</option>
+        </select>
+        <input required type="number" min="0" step="0.01" name="amount" placeholder="Сома, ₸" />
+        <select name="status">
+          <option value="new">new</option>
+          <option value="paid">paid</option>
+          <option value="canceled">canceled</option>
+        </select>
+        <button class="primary" type="submit">Тапсырыс қосу</button>
+      </form>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Клиент</th><th>Сома</th><th>Күйі</th><th>Күні</th><th>Құрал</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section data-page="analytics" class="page">
+      <h2>Analytics</h2>
+      <div class="analytics-grid">
+        <div class="card">
+          <h3>Апталық тапсырыстар</h3>
+          <canvas id="ordersChart" height="140"></canvas>
+        </div>
+        <div class="card">
+          <h3>Жалпы көрсеткіштер</h3>
+          <ul class="kpis">
+            <li><b id="kpiClients">0</b> клиент</li>
+            <li><b id="kpiOrders">0</b> тапсырыс</li>
+            <li><b id="kpiRevenue">0</b> ₸ жалпы түсім</li>
+          </ul>
+          <button id="exportCsv">Экспорт (CSV)</button>
+        </div>
+      </div>
+    </section>
+
+    <section data-page="chat" class="page">
+      <h2>Chat</h2>
+      <div id="chatBox" class="chat-box"></div>
+      <form id="chatForm" class="chat-form">
+        <input name="text" required placeholder="Хабар жазыңыз..." />
+        <button class="primary">Жіберу</button>
+      </form>
+      <p class="muted">
+        Ескерту: бұл ішкі чат үлгісі. Шын клиент чатына Telegram/WhatsApp ботты кейін жалғауға болады.
+      </p>
+    </section>
+
+    <section data-page="settings" class="page">
+      <h2>Settings (модульдерді қос/өшіру)</h2>
+      <form id="settingsForm" class="settings">
+        <label><input type="checkbox" name="module_clients" /> Clients</label>
+        <label><input type="checkbox" name="module_sales" /> Sales</label>
+        <label><input type="checkbox" name="module_analytics" /> Analytics</label>
+        <label><input type="checkbox" name="module_chat" /> Chat</label>
+        <button class="primary" type="submit">Сақтау</button>
+        <button id="resetAll" type="button">Барлығын тазалау</button>
+      </form>
+      <p class="muted">Модуль өшірілсе — навигацияда және Dashboard-та көрінбейді.</p>
     </section>
   </main>
-  <footer>© 2025 Bizzone MVP</footer>
+
+  <footer class="footer">© BizAssist MVP</footer>
+
   <script src="script.js"></script>
 </body>
 </html>
