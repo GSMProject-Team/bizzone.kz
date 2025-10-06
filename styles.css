@@ -1,8 +1,0 @@
-body{font-family:Arial;background:#0b1220;color:#e6eefc;margin:0}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#121a2b}
-.logo{height:40px;border-radius:8px}
-nav a{color:#93a0b6;margin:0 6px;text-decoration:none;padding:6px 10px;border-radius:6px}
-nav a.active,nav a:hover{background:rgba(77,163,255,.2);color:#fff}
-.page{display:none;padding:20px}.page.visible{display:block}
-button{background:#4da3ff;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
-footer{text-align:center;color:#93a0b6;padding:20px}
